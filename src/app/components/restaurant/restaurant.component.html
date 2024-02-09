@@ -1,16 +1,22 @@
 <ion-item lines="none">
-  <ion-thumbnail>
-    <img src="assets/imgs/img1.jpeg" alt="">
+  <ion-thumbnail slot="start">
+    <img [src]="restaurant?.cover ? restaurant.cover : 'assets/imgs/img1.jpeg'"/>
   </ion-thumbnail>
-  
   <ion-label>
-    <h4>Dom Henrique</h4>
+    <h4>{{restaurant?.name}}</h4>
     <ion-text color="medium">
-      <p class="pStyle">Hamburguer, Café</p>
-      <span><ion-icon name="star"></ion-icon>5.</span>
-      25 mins. R$ 100,00 para 2
-      <ion-text>
-        <p class="distance">1.2 km</p>
+      <p class="pStyle">{{getCuisine(restaurant?.cuisines)}}</p>
+      <ion-text color="dark">
+        <span>
+          <ion-icon name="star"></ion-icon>
+          {{restaurant?.rating}}
+        </span>
+        {{restaurant?.delivery_time}} mins, {{restaurant?.price}} para 2 pessoas
+      </ion-text>
+      <ion-text color="tertiary">
+        <p class="distance">
+         {{restaurant?.distance}} kms de distância
+        </p>
       </ion-text>
     </ion-text>
   </ion-label>

@@ -19,8 +19,9 @@
         <p>Descubra os melhores restaurantes próximos de você</p>
       </ion-label>
     </ion-list-header>
-
-    <app-restaurant></app-restaurant>
+    <ion-item-group *ngIf="restaurants?.length > 0">
+      <app-restaurant *ngFor="let restaurant of restaurants" [restaurant]="restaurant"></app-restaurant>
+    </ion-item-group>
 
   </ion-list>
 </ion-content>
