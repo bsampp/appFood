@@ -17,6 +17,6 @@ query?.length == 0)" [model]="model"></app-empty-screen>
       </ion-label>
     </ion-list-header>
     <app-restaurant *ngFor="let restaurant of restaurants"
-    [restaurant]="restaurant"></app-restaurant>
+    [restaurant]="restaurant" [routerLink]="['/', 'tabs', 'restaurants', restaurant.uid]"></app-restaurant>
   </ion-list>
 </ion-content>
