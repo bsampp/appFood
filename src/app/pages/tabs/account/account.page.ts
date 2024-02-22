@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountPage implements OnInit {
 
+  orders: any[] = [];
+  isLoading: boolean = false;
+  model: any = {
+    title: 'Nenhum pedido realizado',
+  }
   constructor() { }
 
   ngOnInit() {
+    console.log(this.model)
   }
 
 }
