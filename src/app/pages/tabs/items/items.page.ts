@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Preferences } from '@capacitor/preferences';
 import { NavController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-items',
@@ -109,13 +111,15 @@ export class ItemsPage implements OnInit {
     }
   ];
   data: any;
-  items: any[] = [];
+  items: any = {};
+  cartData: any = {};
+  storeData: any = {};
   id: any;
   veg: boolean = false;
 
 
 
-  constructor(private route: ActivatedRoute, private navCtrl: NavController) { }
+  constructor(private route: ActivatedRoute, private navCtrl: NavController, private router: Router) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -129,12 +133,101 @@ export class ItemsPage implements OnInit {
     })
   }
 
-  getItems(){
+  async getItems(){
     this.data = {};
     let data: any = this.restaurants.filter(x => x.uid === this.id);
     this.data = data[0];
     console.log(this.data);
-    this.items = this.allItems;
+    this.items = this.allItems.filter(x => x.uid === this.id);
+    this.categories = this.categories.filter(x => x.uid === this.id);
+    this.storeData = {};
+    let cart : any = await this.getCart();
+    if(cart?.value){
+    this.storeData = JSON.parse(cart.value);
+    if(this.id == this.storeData.restaurant.uid && this.allItems.length >
+    0){
+    this.allItems.forEach((element: any) => {
+    this.storeData.items.forEach(ele => {
+    if(element.id != ele.id) return;
+    element.quantity = ele.quantity;
+    });
+    });
+    }
+    }
+    this.cartData.totalItem = this.storeData.totalItem;
+    this.cartData.totalPrice = this.storeData.totalPrice;
+  
+  }
+
+  quantityPlus(item, index){
+    try{
+      if(!this.items[index].quantity || this.items[index].quantity === 0){
+        this.items[index].quantity = 1; 
+      }
+      else{
+        this.items[index].quantity += 1; 
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+    this.calculate()
+  }
+  
+  quantityMinus(item, index){
+    if(this.items[index].quantity !== 0){
+      this.items[index].quantity -= 1; 
+    }
+    else{
+      this.items[index].quantity = 0; 
+    }
+    this.calculate()
+  }
+  
+  calculate(){
+    console.log(this.items);
+    this.cartData.items = []; 
+    let item = this.items.filter(x => x.quantity > 0);
+    this.cartData.items = item; 
+    this.cartData.total = 0;
+    this.cartData.totalItem = 0;
+    this.cartData.totalPrice = 0; 
+    item.forEach(element => {
+      this.cartData.totalItem += element.quantity;
+      this.cartData.totalPrice += (parseFloat(element.price)) * (parseFloat(element.quantity));
+    });
+    this.cartData.totalPrice = this.cartData.totalPrice.toFixed(2);
+    if(this.cartData.totalItem === 0){
+      this.cartData.totalPrice = 0;
+      this.cartData.totalItem = 0;
+    }
+  }
+
+  async saveToCart(){
+    try{
+      this.cartData.restaurant = {};
+      this.cartData.restaurant = this.data;
+      await Preferences.set(
+        {
+          key: 'cartData',
+          value: JSON.stringify(this.cartData)
+        }
+        );
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  async viewCart(){
+    if(this.cartData.items && this.cartData.items.length > 0){
+      await this.saveToCart();
+      this.router.navigate([this.router.url + '/cart']);
+    }
+  }
+
+  getCart(){
+    return Preferences.get({key: 'cartData'});
   }
 
   getCuisine(cuisine){
@@ -142,7 +235,12 @@ export class ItemsPage implements OnInit {
   }
 
   vegOnly(event){
-
+    if (event.detail.checked) {
+      this.items = this.allItems.filter(x => x.veg === true);
+    }
+    else{
+      this.items = this.allItems;
+    }
   }
 
 }
