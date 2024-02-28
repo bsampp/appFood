@@ -2,18 +2,16 @@
   <ion-toolbar>
     <ion-title color="tertiary">Carrinho</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <ion-list lines="none">
     <ion-item>
       <ion-thumbnail slot="start">
-        <ion-img
-          [src]="model?.restaurant?.cover ? model.restaurant.cover:
- 'assets/imgs/img1.jpeg'"
-        />
+        <ion-img [src]="model?.restaurant?.cover ? model.restaurant.cover : 'assets/imgs/img1.jpeg'" />
       </ion-thumbnail>
       <ion-label>
         <ion-text><h4>{{model?.restaurant?.name}}</h4></ion-text>
@@ -24,33 +22,16 @@
       <ion-text><span class="dotStyle">&#9679;</span></ion-text>
       <ion-label class="ion-text-wrap"><h5>{{item?.name}}</h5></ion-label>
       <ion-row>
-        <ion-icon
-          color="success"
-          name="remove-outline"
-          (click)="quantityMinus(i)"
-        ></ion-icon>
-        <ion-text class="ion-text-center quantity" color="success"
-          >{{item?.quantity}}</ion-text
-        >
-        <ion-icon
-          color="success"
-          name="add-outline"
-          (click)="quantityPlus(i)"
-        ></ion-icon>
+        <ion-icon color="success" name="remove-outline" (click)="quantityMinus(i)"></ion-icon>
+        <ion-text class="ion-text-center quantity" color="success">{{item?.quantity}}</ion-text>
+        <ion-icon color="success" name="add-outline" (click)="quantityPlus(i)"></ion-icon>
       </ion-row>
-      <ion-text slot="end" color="dark" class="price">
-        R$: {{item?.price * item.quantity}}
-      </ion-text>
+      <ion-text slot="end" color="dark" class="price">R$: {{item?.price * item.quantity}}</ion-text>
     </ion-item>
   </ion-list>
   <ion-item lines="none">
     <ion-icon slot="start" name="list-outline"></ion-icon>
-    <ion-input
-      type="text"
-      placeholder="Alguma alteração? Vamos fazer o nosso
- melhor"
-      [(ngModel)]="instruction"
-    ></ion-input>
+    <ion-input type="text" placeholder="Alguma alteração? Vamos fazer o nosso melhor" [(ngModel)]="instruction"></ion-input>
     <!-- //declarar com any na ts -->
   </ion-item>
   <ion-list>
@@ -67,18 +48,15 @@
     </ion-item>
     <ion-item lines="none">
       <ion-label>Total a pagar:</ion-label>
-      <ion-text slot="end" color="dark"
-        ><h5>R$: {{model?.grandTotal}}</h5></ion-text
-      >
+      <ion-text slot="end" color="dark"><h5>R$: {{model?.grandTotal}}</h5></ion-text>
     </ion-item>
   </ion-list>
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
     <ion-item lines="none">
-      <ion-button slot="end" fill="clear" (click)="changeAddress()"
-        >Trocar</ion-button
-      >
+      <ion-button slot="end" fill="clear" (click)="changeAddress()">Trocar</ion-button>
       <ion-icon slot="start" name="home-outline"></ion-icon>
       <ion-label>
         <h5>Entregar em CASA</h5>
