@@ -23,9 +23,17 @@
       <h5>Gerenciar Endereços</h5>
     </ion-item>
   </ion-list>
-
+  
   <ion-list>
-    <ion-list-header>
+    <app-loading-orders *ngIf="isLoading"></app-loading-orders>
+    <app-empty-orders *ngIf="!isLoading && orders.length == 0" [model]="model"></app-empty-orders>
+    <div *ngIf="orders.length > 0 " style="text-align: center;">
+      <h4 style="display: inline-block;">
+        Histórico de Pedidos 
+      </h4> 
+      <app-orders *ngFor="let order of orders" [order]="order"></app-orders>
+    </div>
+    <!-- <ion-list-header>
       <ion-label color="primary">Últimos pedidos</ion-label>
     </ion-list-header>
     <ion-item-group>
@@ -61,6 +69,6 @@
           </ion-row>
         </ion-label>
       </ion-item>
-    </ion-item-group>
+    </ion-item-group> -->
   </ion-list>
 </ion-content>
