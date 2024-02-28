@@ -25,7 +25,14 @@
   </ion-list>
   
   <ion-list>
-    <app-empty-orders [model]="model"></app-empty-orders>
+    <app-loading-orders *ngIf="isLoading"></app-loading-orders>
+    <app-empty-orders *ngIf="!isLoading && orders.length == 0" [model]="model"></app-empty-orders>
+    <div *ngIf="orders.length > 0 " style="text-align: center;">
+      <h4 style="display: inline-block;">
+        Histórico de Pedidos 
+      </h4> 
+      <app-orders *ngFor="let order of orders" [order]="order"></app-orders>
+    </div>
     <!-- <ion-list-header>
       <ion-label color="primary">Últimos pedidos</ion-label>
     </ion-list-header>
